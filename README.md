@@ -247,13 +247,13 @@ make test
   ![Spark Master Screenshot](docs/spark-master.PNG)
 
 - **Spark Worker UI**: [http://localhost:8081](http://localhost:8081)  
-  ![Spark Worker Screenshot](./docs/spark-worker-ui.png)
+  ![Spark Worker Screenshot](docs/spark-worker.png)
 
 - **Monitor Dashboard**: [http://localhost:3000](http://localhost:3000)  
-  ![Dashboard Screenshot](./docs/dashboard.png)
+  ![Dashboard Screenshot](docs/dashboard.png)
 
 - **API Status**: [http://localhost:3000/api/status](http://localhost:3000/api/status)  
-  ![API Status Screenshot](./docs/api-status.png)
+  ![API Status Screenshot](docs/api-status.png)
 
 ## ✨ Fonctionnalités du POC
 
