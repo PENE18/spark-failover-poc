@@ -244,7 +244,7 @@ make test
 ## 6. Interfaces
 
 - **Spark Master UI**: [http://localhost:8080](http://localhost:8080)  
-  ![Spark Master Screenshot](./docs/spark-master-ui.png)
+  ![Spark Master Screenshot](./docs/spark-master.png)
 
 - **Spark Worker UI**: [http://localhost:8081](http://localhost:8081)  
   ![Spark Worker Screenshot](./docs/spark-worker-ui.png)
