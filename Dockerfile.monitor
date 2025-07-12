@@ -1,0 +1,23 @@
+FROM python:3.9-slim
+
+# Installation des dépendances
+RUN pip install --no-cache-dir \
+    flask \
+    requests \
+    watchdog
+
+# Création du répertoire de travail
+WORKDIR /app
+
+# Copie du script de monitoring
+COPY monitor/ /app/
+
+# Exposition du port
+EXPOSE 3000
+
+# Utilisateur non-root
+RUN useradd -m -u 1001 monitor-user && chown -R monitor-user:monitor-user /app
+USER monitor-user
+
+# Commande par défaut
+CMD ["python", "monitor.py"]

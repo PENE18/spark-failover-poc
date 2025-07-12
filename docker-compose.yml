@@ -1,0 +1,108 @@
+version: '3.8'
+
+services:
+  spark-master:
+    image: bitnami/spark:3.5
+    container_name: spark-master
+    hostname: spark-master
+    environment:
+      - SPARK_MODE=master
+      - SPARK_RPC_AUTHENTICATION_ENABLED=no
+      - SPARK_RPC_ENCRYPTION_ENABLED=no
+      - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
+      - SPARK_SSL_ENABLED=no
+      - SPARK_USER=spark
+    ports:
+      - "8080:8080"  # Spark Master Web UI
+      - "7077:7077"  # Spark Master Port
+    volumes:
+      - ./data:/opt/spark/data
+      - ./logs:/opt/spark/logs
+      - ./apps:/opt/spark/apps
+    networks:
+      - spark-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  spark-worker:
+    image: bitnami/spark:3.5
+    container_name: spark-worker
+    hostname: spark-worker
+    depends_on:
+      - spark-master
+    environment:
+      - SPARK_MODE=worker
+      - SPARK_MASTER_URL=spark://spark-master:7077
+      - SPARK_WORKER_MEMORY=1G
+      - SPARK_WORKER_CORES=1
+      - SPARK_RPC_AUTHENTICATION_ENABLED=no
+      - SPARK_RPC_ENCRYPTION_ENABLED=no
+      - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
+      - SPARK_SSL_ENABLED=no
+      - SPARK_USER=spark
+    ports:
+      - "8081:8081"  # Spark Worker Web UI
+    volumes:
+      - ./data:/opt/spark/data
+      - ./logs:/opt/spark/logs
+      - ./apps:/opt/spark/apps
+    networks:
+      - spark-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8081"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  spark-app:
+    build: .
+    container_name: spark-app
+    depends_on:
+      spark-master:
+        condition: service_healthy
+      spark-worker:
+        condition: service_healthy
+    environment:
+      - SPARK_MASTER_URL=spark://spark-master:7077
+      - PYTHONPATH=/opt/spark/python:/opt/spark/python/lib/py4j-0.10.9.7-src.zip
+    volumes:
+      - ./apps:/app
+      - ./data:/data
+      - ./logs:/logs
+    networks:
+      - spark-network
+    restart: unless-stopped
+    command: python /app/failover_job.py
+
+  monitor:
+    build:
+      context: .
+      dockerfile: Dockerfile.monitor
+    container_name: spark-monitor
+    depends_on:
+      - spark-master
+      - spark-worker
+    environment:
+      - SPARK_MASTER_URL=http://spark-master:8080
+      - SPARK_WORKER_URL=http://spark-worker:8081
+    ports:
+      - "3000:3000"  # Monitor Web UI
+    volumes:
+      - ./logs:/logs
+      - ./data:/data
+    networks:
+      - spark-network
+    restart: unless-stopped
+
+networks:
+  spark-network:
+    driver: bridge
+
+volumes:
+  spark-data:
+  spark-logs:
