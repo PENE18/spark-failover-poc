@@ -1,6 +1,6 @@
 Spark Failover POC avec Docker Compose
 Un proof of concept (POC) démontrant la gestion du failover automatique avec Apache Spark dans un environnement Docker Compose.
-Structure du projet
+📁 Structure du projet
 spark-failover-poc/
 ├── docker-compose.yml
 ├── Dockerfile
@@ -21,9 +21,9 @@ spark-failover-poc/
 │   ├── output/
 │   └── checkpoints/
 └── logs/
-Fichiers de configuration
+🔧 Fichiers de configuration
 requirements.txt
-pyspark==3.5.0
+txtpyspark==3.5.0
 pandas==2.0.3
 requests==2.31.0
 flask==2.3.2
@@ -174,7 +174,7 @@ monitor:
 	@echo "Spark Worker UI: http://localhost:8081"
 	@echo "Monitor Dashboard: http://localhost:3000"
 	@echo "API Status: http://localhost:3000/api/status"
-Installation et utilisation
+🚀 Installation et utilisation
 1. Cloner et configurer
 bashgit clone <your-repo>
 cd spark-failover-poc
@@ -210,7 +210,7 @@ make status
 
 # Tester la connectivité
 make test
-Fonctionnalités du POC
+✨ Fonctionnalités du POC
 ✅ Failover automatique
 
 Redémarrage automatique en cas de panne
@@ -237,7 +237,7 @@ Pannes aléatoires (30% de chance)
 Gestion des exceptions
 Nettoyage automatique des ressources
 
-Personnalisation
+⚙️ Personnalisation
 Modifier le taux de panne
 Dans apps/failover_job.py:
 pythonself.failure_rate = 0.5  # 50% de chance de panne
@@ -249,7 +249,7 @@ yamlenvironment:
 Modifier la fréquence de traitement
 Dans apps/failover_job.py:
 pythontime.sleep(60)  # Attendre 60 secondes entre les cycles
-Dépannage
+🔧 Dépannage
 Logs détaillés
 bashdocker-compose logs -f --tail=100 spark-app
 Redémarrage complet
@@ -258,7 +258,7 @@ make build
 make up
 Vérifier les ports
 bashnetstat -tlnp | grep -E "8080|8081|3000"
-Production
+🏭 Production
 Pour un usage en production, considérez:
 
 Utiliser un registry Docker privé
@@ -267,5 +267,13 @@ Ajouter des ressources limits/requests
 Mettre en place un monitoring externe (Prometheus/Grafana)
 Utiliser un orchestrateur (Kubernetes)
 
-Commandes utiles
+📋 Commandes utiles
 CommandeDescriptionmake buildConstruire les images Dockermake upDémarrer tous les servicesmake downArrêter tous les servicesmake logsVoir tous les logsmake statusVoir le statut des servicesmake cleanNettoyer complètementmake testTester la connectivitémake monitorAfficher les URLs des interfaces
+📦 Prérequis
+
+Docker 20.10+
+Docker Compose 1.29+
+Make (optionnel mais recommandé)
+
+📝 Licence
+Ce projet est sous licence MIT. Voir le fichier LICENSE pour plus de détails.
