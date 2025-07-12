@@ -241,16 +241,20 @@ make status
 # Tester la connectivité
 make test
 ```
-### 6.  interfaces
-**Spark Master UI**: http://localhost:8080
-![App Screenshot](docs/spark-master.png)
-**Spark Worker UI**: http://localhost:8081
-![App Screenshot](docs/spark-worker.png)
-**Monitor Dashboard**: http://localhost:3000
-![App Screenshot](docs/poc-dashboards.png)
-![App Screenshot](docs/poc2.png)
- **API Status**: http://localhost:3000/api/status
-![App Screenshot](docs/JSon.png)
+## 6. Interfaces
+
+- **Spark Master UI**: [http://localhost:8080](http://localhost:8080)  
+  ![Spark Master Screenshot](./docs/spark-master-ui.png)
+
+- **Spark Worker UI**: [http://localhost:8081](http://localhost:8081)  
+  ![Spark Worker Screenshot](./docs/spark-worker-ui.png)
+
+- **Monitor Dashboard**: [http://localhost:3000](http://localhost:3000)  
+  ![Dashboard Screenshot](./docs/dashboard.png)
+
+- **API Status**: [http://localhost:3000/api/status](http://localhost:3000/api/status)  
+  ![API Status Screenshot](./docs/api-status.png)
+
 ## ✨ Fonctionnalités du POC
 
 
