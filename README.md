@@ -247,10 +247,11 @@ make test
   ![Spark Master Screenshot](docs/spark-master.PNG)
 
 - **Spark Worker UI**: [http://localhost:8081](http://localhost:8081)  
-  ![Spark Worker Screenshot](docs/spark-worker.png)
+  ![Spark Worker Screenshot](docs/spark-worker.PNG)
 
 - **Monitor Dashboard**: [http://localhost:3000](http://localhost:3000)  
-  ![Dashboard Screenshot](docs/dashboard.png)
+  ![Dashboard Screenshot](docs/poc-dashboards.PNG)
+   ![Dashboard Screenshot](docs/poc2.PNG)
 
 - **API Status**: [http://localhost:3000/api/status](http://localhost:3000/api/status)  
   ![API Status Screenshot](docs/api-status.png)
