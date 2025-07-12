@@ -254,7 +254,7 @@ make test
    ![Dashboard Screenshot](docs/poc2.PNG)
 
 - **API Status**: [http://localhost:3000/api/status](http://localhost:3000/api/status)  
-  ![API Status Screenshot](docs/api-status.png)
+  ![API Status Screenshot](docs/JSon.PNG)
 
 ## ✨ Fonctionnalités du POC
 
