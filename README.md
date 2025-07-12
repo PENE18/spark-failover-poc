@@ -1,6 +1,10 @@
-Spark Failover POC avec Docker Compose
+# Spark Failover POC avec Docker Compose
+
 Un proof of concept (POC) démontrant la gestion du failover automatique avec Apache Spark dans un environnement Docker Compose.
-📁 Structure du projet
+
+## 📁 Structure du projet
+
+```
 spark-failover-poc/
 ├── docker-compose.yml
 ├── Dockerfile
@@ -21,20 +25,30 @@ spark-failover-poc/
 │   ├── output/
 │   └── checkpoints/
 └── logs/
-🔧 Fichiers de configuration
-requirements.txt
-txtpyspark==3.5.0
+```
+
+## 🔧 Fichiers de configuration
+
+### requirements.txt
+```txt
+pyspark==3.5.0
 pandas==2.0.3
 requests==2.31.0
 flask==2.3.2
 watchdog==3.0.0
-.env
-bashSPARK_MASTER_URL=spark://spark-master:7077
+```
+
+### .env
+```bash
+SPARK_MASTER_URL=spark://spark-master:7077
 SPARK_WORKER_MEMORY=1G
 SPARK_WORKER_CORES=2
 COMPOSE_PROJECT_NAME=spark-failover-poc
-.gitignore
-gitignore# Python
+```
+
+### .gitignore
+```gitignore
+# Python
 __pycache__/
 *.py[cod]
 *$py.class
@@ -91,8 +105,11 @@ spark-warehouse/
 # OS
 .DS_Store
 Thumbs.db
-Makefile
-makefile.PHONY: build up down logs clean restart status
+```
+
+### Makefile
+```makefile
+.PHONY: build up down logs clean restart status
 
 # Variables
 COMPOSE_FILE = docker-compose.yml
@@ -174,35 +191,48 @@ monitor:
 	@echo "Spark Worker UI: http://localhost:8081"
 	@echo "Monitor Dashboard: http://localhost:3000"
 	@echo "API Status: http://localhost:3000/api/status"
-🚀 Installation et utilisation
-1. Cloner et configurer
-bashgit clone <your-repo>
+```
+
+## 🚀 Installation et utilisation
+
+### 1. Cloner et configurer
+```bash
+git clone <your-repo>
 cd spark-failover-poc
 cp .env.example .env  # Ajuster les variables si nécessaire
-2. Démarrer le POC
-bash# Méthode 1: Avec Makefile
+```
+
+### 2. Démarrer le POC
+```bash
+# Méthode 1: Avec Makefile
 make build
 make up
 
 # Méthode 2: Docker Compose direct
 docker-compose up -d --build
-3. Accéder aux interfaces
+```
 
-Spark Master UI: http://localhost:8080
-Spark Worker UI: http://localhost:8081
-Monitor Dashboard: http://localhost:3000
-API Status: http://localhost:3000/api/status
+### 3. Accéder aux interfaces
 
-4. Surveiller les logs
-bash# Tous les logs
+- **Spark Master UI**: http://localhost:8080
+- **Spark Worker UI**: http://localhost:8081
+- **Monitor Dashboard**: http://localhost:3000
+- **API Status**: http://localhost:3000/api/status
+
+### 4. Surveiller les logs
+```bash
+# Tous les logs
 make logs
 
 # Logs spécifiques
 make logs-app
 make logs-master
 make logs-monitor
-5. Tester le failover
-bash# Forcer un redémarrage de l'application
+```
+
+### 5. Tester le failover
+```bash
+# Forcer un redémarrage de l'application
 make restart-app
 
 # Voir le statut
@@ -210,70 +240,110 @@ make status
 
 # Tester la connectivité
 make test
-✨ Fonctionnalités du POC
-✅ Failover automatique
+```
 
-Redémarrage automatique en cas de panne
-Backoff exponentiel entre les tentatives
-Limite du nombre de redémarrages
+## ✨ Fonctionnalités du POC
 
-✅ Monitoring en temps réel
+### ✅ Failover automatique
+- Redémarrage automatique en cas de panne
+- Backoff exponentiel entre les tentatives
+- Limite du nombre de redémarrages
 
-Interface web avec dashboard
-API REST pour intégration
-Surveillance des logs
-Métriques des ressources
+### ✅ Monitoring en temps réel
+- Interface web avec dashboard
+- API REST pour intégration
+- Surveillance des logs
+- Métriques des ressources
 
-✅ Configuration Docker
+### ✅ Configuration Docker
+- Services isolés
+- Réseaux Docker
+- Volumes persistants
+- Health checks
 
-Services isolés
-Réseaux Docker
-Volumes persistants
-Health checks
+### ✅ Simulation de pannes
+- Pannes aléatoires (30% de chance)
+- Gestion des exceptions
+- Nettoyage automatique des ressources
 
-✅ Simulation de pannes
+## ⚙️ Personnalisation
 
-Pannes aléatoires (30% de chance)
-Gestion des exceptions
-Nettoyage automatique des ressources
+### Modifier le taux de panne
+Dans `apps/failover_job.py`:
+```python
+self.failure_rate = 0.5  # 50% de chance de panne
+```
 
-⚙️ Personnalisation
-Modifier le taux de panne
-Dans apps/failover_job.py:
-pythonself.failure_rate = 0.5  # 50% de chance de panne
-Ajuster les ressources
-Dans docker-compose.yml:
-yamlenvironment:
+### Ajuster les ressources
+Dans `docker-compose.yml`:
+```yaml
+environment:
   - SPARK_WORKER_MEMORY=2G
   - SPARK_WORKER_CORES=2
-Modifier la fréquence de traitement
-Dans apps/failover_job.py:
-pythontime.sleep(60)  # Attendre 60 secondes entre les cycles
-🔧 Dépannage
-Logs détaillés
-bashdocker-compose logs -f --tail=100 spark-app
-Redémarrage complet
-bashmake clean
+```
+
+### Modifier la fréquence de traitement
+Dans `apps/failover_job.py`:
+```python
+time.sleep(60)  # Attendre 60 secondes entre les cycles
+```
+
+## 🔧 Dépannage
+
+### Logs détaillés
+```bash
+docker-compose logs -f --tail=100 spark-app
+```
+
+### Redémarrage complet
+```bash
+make clean
 make build
 make up
-Vérifier les ports
-bashnetstat -tlnp | grep -E "8080|8081|3000"
-🏭 Production
+```
+
+### Vérifier les ports
+```bash
+netstat -tlnp | grep -E "8080|8081|3000"
+```
+
+## 🏭 Production
+
 Pour un usage en production, considérez:
 
-Utiliser un registry Docker privé
-Configurer des secrets pour les credentials
-Ajouter des ressources limits/requests
-Mettre en place un monitoring externe (Prometheus/Grafana)
-Utiliser un orchestrateur (Kubernetes)
+- Utiliser un registry Docker privé
+- Configurer des secrets pour les credentials
+- Ajouter des ressources limits/requests
+- Mettre en place un monitoring externe (Prometheus/Grafana)
+- Utiliser un orchestrateur (Kubernetes)
 
-📋 Commandes utiles
-CommandeDescriptionmake buildConstruire les images Dockermake upDémarrer tous les servicesmake downArrêter tous les servicesmake logsVoir tous les logsmake statusVoir le statut des servicesmake cleanNettoyer complètementmake testTester la connectivitémake monitorAfficher les URLs des interfaces
-📦 Prérequis
+## 📋 Commandes utiles
 
-Docker 20.10+
-Docker Compose 1.29+
-Make (optionnel mais recommandé)
+| Commande | Description |
+|----------|-------------|
+| `make build` | Construire les images Docker |
+| `make up` | Démarrer tous les services |
+| `make down` | Arrêter tous les services |
+| `make logs` | Voir tous les logs |
+| `make status` | Voir le statut des services |
+| `make clean` | Nettoyer complètement |
+| `make test` | Tester la connectivité |
+| `make monitor` | Afficher les URLs des interfaces |
 
-📝 Licence
-Ce projet est sous licence MIT. Voir le fichier LICENSE pour plus de détails.
+## 📦 Prérequis
+
+- Docker 20.10+
+- Docker Compose 1.29+
+- Make (optionnel mais recommandé)
+
+## 📝 Licence
+
+Ce projet est sous licence MIT. Voir le fichier `LICENSE` pour plus de détails.
+
+## 🤝 Contribution
+
+Les contributions sont les bienvenues ! Veuillez ouvrir une issue ou soumettre une pull request.
+
+## 📞 Support
+
+Pour toute question ou problème, n'hésitez pas à ouvrir une issue sur GitHub.
